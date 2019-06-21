@@ -1,0 +1,11 @@
+{% if images %}
+{% for image in images %}
+<p>
+    {{image.posted}}
+</p>
+{% empty %}
+<p>
+    There are no images
+</p>
+{% endfor%}
+{% endif%}

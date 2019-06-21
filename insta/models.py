@@ -26,7 +26,6 @@ class Profile(models.Model):
     bio = models.TextField(max_length= 500, blank= True)
     profile_pic = models.ImageField(upload_to = 'image', blank = True)
     age = models.DateField(blank = True)
-    images = models.ForeignKey(Image)
 
     def __str__(self):
         return self.first_name
