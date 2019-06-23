@@ -1,3 +1,7 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
 {% if images %}
 {% for image in images %}
 <p>
@@ -9,3 +13,5 @@
 </p>
 {% endfor%}
 {% endif%}
+
+{% endblock %}

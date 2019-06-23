@@ -6,4 +6,4 @@ from .models import Image,Followers,Following
 @login_required(login_url='/accounts/login/')
 def welcome(request):
     images = Image.objects.all()   
-    return render(request,'index.html',{"images":images})
+    return render(request,'all-out/index.html',{"images":images})
