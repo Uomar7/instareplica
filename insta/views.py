@@ -1,34 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 import datetime as dt
 from django.contrib.auth.decorators import login_required
-from .models import Image,Followers,Following,Profile
-from .forms import ProfileForm
+from .models import Image,Followers,Following,Profile,Comments
+from .forms import ProfileForm,CommentsForm,ImageForm
 
 
 @login_required(login_url='/accounts/login/')
-def welcome(request):
-    images = Image.objects.all()   
-    return render(request,'all-out/index.html',{"images":images})
-
-@login_required(login_url='/accounts/login/')
-def edit_profile(request):
-
+def landing_page(request):
+    images = Image.objects.all()
     current_user = request.user
-    if request.method == "POST":
-        form = ProfileForm(request.POST)
+    form = CommentsForm()
+    
+    if request.method =="POST":
+        form = CommentsForm(request.POST, request.FILES)
         if form.is_valid():
-            details = form.save(commit=False)
-            details.user = current_user
-            details.save()
+            comm = form.save(commit = False)
+            comm.posted_by = current_user
+            comm.save()
+        
+            # return redirect(landing_page)
+    else:
+        form = CommentsForm()
+    
 
-        else:
-            form = ProfileForm()
-
-        return render(request, 'all-out/edit_profile.html',{"form":form})
-
-@login_required(login_url='/accounts/login/')
-def profile_page(request):
-    info = Profile.objects.all()
-
-    return render(request, "profile.html",{"info":info})
+    return render(request, "all-out/index.html", {"images": images,"form":form})
