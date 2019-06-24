@@ -4,8 +4,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns=[
-    url('^$',views.welcome,name='home'),
-    url('^profile/$', views.edit_profile, name='profile'),
+    url('^$',views.landing_page,name='home'),
+    url('^edit/(\d+)',views.edit_profile,name="edit_profile"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
