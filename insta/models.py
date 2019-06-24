@@ -10,6 +10,12 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.post
+    
+    def save_comment(self):
+        self.save()
+
+    def delete_comment(Self):
+        self.delete()
 
 class Image(models.Model):
     image_caption = models.TextField()
@@ -37,6 +43,10 @@ class Image(models.Model):
     def get_image_by_id(cls,id):
         image = cls.objects.get(id = id)
         return image
+    
+    @classmethod
+    def get_comments_by_image(cls):
+        all_comments = Image.objects.get(comments__post).all()
 
 class Profile(models.Model):
     first_name = models.CharField(max_length = 40)
