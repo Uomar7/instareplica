@@ -2,34 +2,76 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime as dt
 
+class Comments(models.Model):
+    post = models.CharField(max_length = 260, blank=True)
+    posted_by = models.ForeignKey(User)
+    posted = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.post
+
 class Image(models.Model):
     image_caption = models.TextField()
-    comments = models.CharField(max_length = 280, blank = True)
+    comments = models.ForeignKey(Comments)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to = 'images', default = 'gallery/media/images')
+    image = models.ImageField(upload_to = 'images/', default = 'gallery/media/images')
     posted = models.DateTimeField(auto_now_add=True)
     location = models.CharField(max_length = 50)
 
     def __str__(self):
         return self.image
 
+    def save_image(self):
+        self.save()
+    
+    def delete_image(self):
+        self.delete()
+    
+    @classmethod
+    def get_images(cls):
+        all_images = cls.objects.all()
+        return all_images
+    
+    @classmethod
+    def get_image_by_id(cls,id):
+        image = cls.objects.get(id = id)
+        return image
+
 class Profile(models.Model):
     first_name = models.CharField(max_length = 40)
     last_name = models.CharField(max_length = 40)
     name = models.OneToOneField(User,on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
-    profile_pic = models.ImageField(upload_to = 'image', blank = True)
-    age = models.DateField(blank = True)
+    profile_pic = models.ImageField(upload_to = 'image/', blank = True)
+    images = models.ForeignKey(Image)
 
     def __str__(self):
         return self.first_name
+    
+    def save_profile(self):
+        self.save()
+    
+    def delete_profile(self):
+        self.delete()
+    
+    @classmethod
+    def get_profiles(cls):
+        all_profiles = cls.objects.all()
+        return all_profiles
+    
+    @classmethod
+    def get_profile_by_id(cls,id):
+        profile = cls.objects.get(id = id)
+        return profile
+    
+    @classmethod
+    def search_profile(cls,search_item):
+        sought_prof = cls.objects.get(name__username = search_item)
+        return sought_prof
 
 class Followers(models.Model):
-    name = models.ForeignKey(User)
-    def __str__(self):
-        return self.name
+    pass
 
 class Following(models.Model):
-    name = models.ForeignKey(User)
-    def __str__(self):
-        return self.name
+    pass
