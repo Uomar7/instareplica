@@ -4,6 +4,7 @@ import datetime as dt
 from django.contrib.auth.decorators import login_required
 from .models import Image,Followers,Following,Profile,Comments
 from .forms import ProfileForm,CommentsForm,ImageForm
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='/accounts/login/')
@@ -46,7 +47,7 @@ def profile(request,id):
         if form.is_valid():
             upload = form.save(commit=False)
             upload.user = current_user
-            upload.profile = current_user
+            upload.profile.username = current_user
             upload.save()
     
     else:
@@ -58,13 +59,12 @@ def profile(request,id):
 @login_required(login_url='/accounts/login/')
 def edit_profile(request):
     current_user = request.user
+    update = Profile.objects.filter(id=current_user.id)
+
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            proform = form.save(commit=False)
-            current_user.username = proform.new_username
-            update = Profile.objects.get(current_user.id)
-            
+            update = form.save(commit=False)
             update.save()
         
             return redirect(profile)

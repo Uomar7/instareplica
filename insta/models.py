@@ -9,26 +9,27 @@ class Profile(models.Model):
     name = models.OneToOneField(User,on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
     profile_pic = models.ImageField(upload_to = 'images/', blank = True)
+    user_id = models.IntegerField()
 
     def __str__(self):
         return self.first_name
-    
+
     def save_profile(self):
         self.save()
-    
+
     def delete_profile(self):
         self.delete()
-    
+
     @classmethod
     def get_profiles(cls):
         all_profiles = cls.objects.all()
         return all_profiles
-    
+
     @classmethod
     def get_profile_by_id(cls,id):
         profile = cls.objects.get(id = id)
         return profile
-    
+
     @classmethod
     def search_profile(cls,search_item):
         sought_prof = cls.objects.get(name__username = search_item)
@@ -48,20 +49,20 @@ class Image(models.Model):
 
     def save_image(self):
         self.save()
-    
+
     def delete_image(self):
         self.delete()
-    
+
     @classmethod
     def get_images(cls):
         all_images = cls.objects.all()
         return all_images
-    
+
     @classmethod
     def get_image_by_id(cls,id):
         image = cls.objects.get(id = id)
         return image
-    
+
     @classmethod
     def get_comments_by_image(cls):
         all_comments = Image.objects.get(comments__post).all()
@@ -74,13 +75,13 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.post
-    
+
     def save_comment(self):
         self.save()
 
     def delete_comment(Self):
         self.delete()
-        
+
 
 
 class Followers(models.Model):
