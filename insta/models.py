@@ -8,7 +8,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length = 40)
     name = models.OneToOneField(User,on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
-    profile_pic = models.ImageField(upload_to = 'image/', blank = True)
+    profile_pic = models.ImageField(upload_to = 'images/', blank = True)
 
     def __str__(self):
         return self.first_name

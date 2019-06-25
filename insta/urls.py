@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns=[
     url('^$',views.landing_page,name='home'),
-    url('^edit/(\d+)',views.edit_profile,name="edit_profile"),
+    url('^edit/$',views.edit_profile,name="edit_profile"),
+    url('^profile/(\d+)',views.profile, name="profile"),
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+

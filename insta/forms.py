@@ -1,5 +1,6 @@
 from django import forms
 from .models import Image,Profile,Comments
+from django.contrib.auth.models import User
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -16,3 +17,6 @@ class CommentsForm(forms.ModelForm):
         model = Comments
         exclude = ["posted","posted_by"]
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        fields = ["username","email"]
