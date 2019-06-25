@@ -14,12 +14,19 @@
         <div class="col-md-4">
             <img src="{{profile.profile_pic.url}}" width="210px" height="210px" class="rounded-circle" alt="">
         </div>
+
         <div class="col-md-8">
             <h3>Username: {{ profile.name }}</h3>
             <p>Fullname: {{profile.first_name}} {{profile.last_name}}</p><hr>
-            <p>Bio: {{ profile.bio }}</p><br>
-            <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
-            
+            <p>Bio: {{ profile.bio }}</p><hr>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a><hr>
+        
+            <form action="{% url 'profile' request.user.id%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {% bootstrap_form form layout="inline" %}
+            <input type="submit" value="upload image" class="btn btn-success">
+            </form>
+        
         </div>
     </div>
     {% endif %}

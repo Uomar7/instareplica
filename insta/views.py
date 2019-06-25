@@ -39,9 +39,20 @@ def profile(request,id):
             all_images.append(image)
             
 
-        print(all_images)    
+        print(all_images)
 
-    return render(request, "all-out/profile.html", {"profile":profile,"images":all_images})
+    if request.method == "POST":
+        form = ImageForm(request.POST,request.FILES)
+        if form.is_valid():
+            upload = form.save(commit=False)
+            upload.user = current_user
+            upload.profile = current_user
+            upload.save()
+    
+    else:
+        form = ImageForm()
+
+    return render(request, "all-out/profile.html", {"profile":profile,"images":all_images,"form":form})
 
 
 @login_required(login_url='/accounts/login/')
