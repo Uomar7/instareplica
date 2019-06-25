@@ -10,12 +10,12 @@ class ProfileForm(forms.ModelForm):
 class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
-        exclude = ["comments","user","profile"]
+        exclude = ["user"]
 
 class CommentsForm(forms.ModelForm):
     class Meta:
         model = Comments
-        exclude = ["posted","posted_by"]
+        exclude = ["posted","posted_by","image"]
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:

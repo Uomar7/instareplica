@@ -10,7 +10,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length = 40)
     name = models.OneToOneField(User,on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
-    profile_pic = models.ImageField(upload_to = 'images/', blank = True)
+    profile_pic = models.ImageField(upload_to ='images/', blank = True)
 
 
     def __str__(self):
@@ -40,20 +40,19 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(name=instance)
     
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 class Image(models.Model):
-    image_caption = models.TextField()
-    comments = models.ForeignKey('Comments')
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
     image = models.ImageField(upload_to = 'images/', default = 'gallery/media/images')
+    image_caption = models.TextField()
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
     location = models.CharField(max_length = 50)
-    profile = models.ForeignKey('Profile')
+    # profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
@@ -79,13 +78,13 @@ class Image(models.Model):
         all_comments = Image.objects.get(comments__post).all()
 
 class Comments(models.Model):
-    post = models.CharField(max_length = 260, blank=True)
-    posted_by = models.ForeignKey(User)
+    content = models.CharField(max_length = 260, blank=True)
+    posted_by = models.ForeignKey(User,on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
-
+    image = models.ForeignKey(Image)
 
     def __str__(self):
-        return self.post
+        return self.content
 
     def save_comment(self):
         self.save()

@@ -34,42 +34,39 @@ def profile(request,id):
     current_user = request.user
     profile = Profile.objects.get(id = id)
     
-    images = Image.objects.all()
-    all_images = []
-    for image in images:
-        if image.profile.name == current_user:
-            all_images.append(image)
-            
+    images = Image.objects.filter(user=id)
 
-        print(all_images)
+    # all_images = []
+    # for image in images:
+    #     all_images.append(image)
+    #     return all_images
 
     if request.method == "POST":
         form = ImageForm(request.POST,request.FILES)
         if form.is_valid():
             upload = form.save(commit=False)
             upload.user = current_user
-            # upload.profile = current_user.id
-            # upload.Comments = Comments
+            # upload.profile.id = profile.id
+            upload.Comments = Comments
             upload.save()
     
     else:
         form = ImageForm()
 
-    return render(request, "all-out/profile.html", {"profile":profile,"images":all_images,"form":form})
+    return render(request, "all-out/profile.html", {"profile":profile,"images":images,"form":form})
 
 
 @transaction.atomic
 def edit_profile(request):
-    # current_user = request.user
+    current_user = request.user
     # update = Profile.objects.filter(id = current_user.id)
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
-            # update = form.save(commit=False)
-            update.save()
+            form.save()
         
-            return redirect('profile',id)
+            return redirect('profile',current_user.id)
     else:
         form = ProfileForm(instance=request.user.profile)
 
