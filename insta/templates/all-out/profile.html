@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+
+{% block styles%}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{profile.profile_pic.url}}" width="210px" height="210px" class="rounded-circle" alt="">
+        </div>
+        <div class="col-md-8">
+            <h3>Username: {{ profile.name }}</h3>
+            <p>Fullname: {{profile.first_name}} {{profile.last_name}}</p><br>
+            <p>Bio: {{ profile.bio }}</p><br>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+        </div>
+    </div>
+    {% if images %}
+    {% for image in images %}
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ image.image.url}}" width="200px" height="200px" class="img-responsive" alt="">
+        </div>
+    </div>
+    {% empty %}
+    <p> No Images Posted</p>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}
