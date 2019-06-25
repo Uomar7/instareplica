@@ -72,3 +72,18 @@ def edit_profile(request):
         form = ProfileForm()
 
     return render(request, "all-out/edit_profile.html", {"form":form, "current":current_user})
+
+def search_results(request):
+    if 'users' in request.GET and request.GET["users"]:
+        search_term = request.GET.get("users")
+        searched_users = Profile.search_profile(search_term)
+
+        message = f"{ search_term }"
+
+        return render(request,"all-out/search.html",{"message":message,"profile":searched_users})
+    
+    else:
+        message = "You Haven't Searched For Anything Yet"
+
+        return render(request,"all-out/search.html", {"message":message})
+        

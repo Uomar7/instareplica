@@ -32,7 +32,7 @@ class Profile(models.Model):
 
     @classmethod
     def search_profile(cls,search_item):
-        sought_prof = cls.objects.get(name__username = search_item)
+        sought_prof = cls.objects.filter(name__username = search_item)
         return sought_prof
 
 class Image(models.Model):

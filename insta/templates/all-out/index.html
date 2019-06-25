@@ -25,14 +25,16 @@
 
             <!-- Card content -->
             <div class="card-body">
-                <form action="{% url 'home'%}" method="post">
+                <form action="{% url 'home' %}" method="post">
                 {% csrf_token %}
                 {% bootstrap_form form layout="inline" %}
                 
                 <input type="submit" class="btn btn-primary" value="comment">                
                 </form><hr>
                 <!-- <P>{{ image.caption}}</P> -->
-                <p>{{ image.comments.post }}</p>
+
+                <p>{{ comment.post }}</p>
+                                
             </div>
 
         </div>
