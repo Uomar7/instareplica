@@ -16,10 +16,11 @@
                 </div>
                 <div class="panel-body">
 
-                    {% csrf_token %}
-                    {% bootstrap_form form layout='inline' %}
-
+                    
                     <form action="/accounts/login/" method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form layout='inline' %}
+                        
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn btn-primary btn-sm">
                         </div>

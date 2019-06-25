@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 import datetime as dt
+from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from .models import Image,Followers,Following,Profile,Comments
 from .forms import ProfileForm,CommentsForm,ImageForm
@@ -31,7 +32,7 @@ def landing_page(request):
 @login_required(login_url='/accounts/login/')
 def profile(request,id):
     current_user = request.user
-    profile = Profile.objects.get(id = current_user.id)
+    profile = Profile.objects.get(id = id)
     
     images = Image.objects.all()
     all_images = []
@@ -47,7 +48,8 @@ def profile(request,id):
         if form.is_valid():
             upload = form.save(commit=False)
             upload.user = current_user
-            upload.profile.username = current_user
+            # upload.profile = current_user.id
+            # upload.Comments = Comments
             upload.save()
     
     else:
@@ -56,22 +58,22 @@ def profile(request,id):
     return render(request, "all-out/profile.html", {"profile":profile,"images":all_images,"form":form})
 
 
-@login_required(login_url='/accounts/login/')
+@transaction.atomic
 def edit_profile(request):
-    current_user = request.user
-    update = Profile.objects.filter(id=current_user.id)
+    # current_user = request.user
+    # update = Profile.objects.filter(id = current_user.id)
 
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if form.is_valid():
-            update = form.save(commit=False)
+            # update = form.save(commit=False)
             update.save()
         
-            return redirect(profile)
+            return redirect('profile',id)
     else:
-        form = ProfileForm()
+        form = ProfileForm(instance=request.user.profile)
 
-    return render(request, "all-out/edit_profile.html", {"form":form, "current":current_user})
+    return render(request, "all-out/edit_profile.html", {"form":form})
 
 def search_results(request):
     if 'users' in request.GET and request.GET["users"]:

@@ -20,7 +20,7 @@
         {% if profile %}
         {% for prof in profile %}
         <div class="col-md-3">
-            <h1>{{prof.first_name}}</h1>
+            <h1><a href="{% url 'profile' prof.id %}">{{prof.first_name}}</a></h1>
         </div>
         {% endfor %}
         {% endif %}
