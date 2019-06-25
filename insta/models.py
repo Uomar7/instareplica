@@ -9,7 +9,7 @@ class Profile(models.Model):
     name = models.OneToOneField(User,on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
     profile_pic = models.ImageField(upload_to = 'images/', blank = True)
-    user_id = models.IntegerField()
+    # user_id = models.IntegerField()
 
     def __str__(self):
         return self.first_name
