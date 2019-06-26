@@ -35,15 +35,16 @@
         
         </div>
     </div>
- 
     {% endif %}
 
     {% if images %}
     {% for image in images %}
     <div class="row">
+            {% if image.user == profile.name %}
         <div class="col-md-4">
             <img src="{{ image.image.url}}" width="200px" height="200px" class="img-responsive" alt="">
         </div>
+        {% endif %}
     </div>
     {% empty %}
     <p> No Images Posted</p>
