@@ -11,49 +11,53 @@ from django.contrib.auth.models import User
 @login_required(login_url='/accounts/login/')
 def landing_page(request):
     images = Image.objects.all()
+    # image = Image.objects.get()
+    comments=Comments.objects.all()
     current_user = request.user
-    form = CommentsForm()
+    # image = Image.objects.get(image=id)
+    # form = CommentsForm()
 
     if request.method =="POST":
-        form = CommentsForm(request.POST, request.FILES)
+        form = CommentsForm(request.POST)
         if form.is_valid():
             comm = form.save(commit = False)
             comm.posted_by = current_user
+            comm.image = image
             comm.save()
         
             # return redirect(landing_page)
     else:
-        form = CommentsForm()
-    
+        form = CommentsForm()    
 
-    return render(request, "all-out/index.html", {"images": images,"form":form})
+    return render(request, "all-out/index.html", {"images": images,"form":form,"comments":comments})
 
 
 @login_required(login_url='/accounts/login/')
 def profile(request,id):
     current_user = request.user
-    profile = Profile.objects.get(id = id)
-    
-    images = Image.objects.filter(user=id)
+    profile = Profile.objects.get(name = id)
+    images = Image.objects.all()
 
     # all_images = []
-    # for image in images:
-    #     all_images.append(image)
-    #     return all_images
+    # images = Image.objects.all()
+    # def imge(images):
+    #     for image in images:
+    #         if image.user.id == profile.name.id:
+    #             return image
+
+        # return all_images  
 
     if request.method == "POST":
         form = ImageForm(request.POST,request.FILES)
         if form.is_valid():
             upload = form.save(commit=False)
             upload.user = current_user
-            # upload.profile.id = profile.id
-            upload.Comments = Comments
             upload.save()
     
     else:
         form = ImageForm()
 
-    return render(request, "all-out/profile.html", {"profile":profile,"images":images,"form":form})
+    return render(request, "all-out/profile.html", {"profile":profile,"form":form,"images":images})
 
 
 @transaction.atomic

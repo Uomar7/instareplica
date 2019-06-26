@@ -81,7 +81,7 @@ class Comments(models.Model):
     content = models.CharField(max_length = 260, blank=True)
     posted_by = models.ForeignKey(User,on_delete=models.CASCADE)
     posted = models.DateTimeField(auto_now_add=True)
-    image = models.ForeignKey(Image)
+    image = models.ForeignKey(Image,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.content
